@@ -36,8 +36,8 @@ public class FruitController {
     @GetMapping
     @RequestMapping(value = "getFruitById/{id}",method = RequestMethod.GET)
     public ResponseEntity<?> getFruitById(@PathVariable int id){
-        Fruit persona=this.fruitImpl.getFruitById(id);
-        return ResponseEntity.ok(persona);
+        Fruit fruit=this.fruitImpl.getFruitById(id);
+        return ResponseEntity.ok(fruit);
     }
     @DeleteMapping
     @RequestMapping(value = "deleteFruitById/{id}",method = RequestMethod.DELETE)
