@@ -1,6 +1,4 @@
 package cat.itacademy.barcelonactiva.cajas.emmanuel.s04.t02.n02.S04T02N02CajasEmmanuel.model.domain;
-
-
 import jakarta.persistence.*;
 import java.util.Objects;
 
@@ -12,10 +10,10 @@ public class Fruit {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(length = 25, nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(length = 25, nullable = false)
+    @Column(name = "kilosQuantity")
     private int kilosQuantity;
 
     public Fruit() {

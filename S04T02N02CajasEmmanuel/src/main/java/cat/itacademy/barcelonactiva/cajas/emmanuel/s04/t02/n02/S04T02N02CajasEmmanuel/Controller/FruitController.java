@@ -1,43 +1,48 @@
-package cat.itacademy.barcelonactiva.cajas.emmanuel.s04.t02.n02.S04T02N02CajasEmmanuel.Controller;
-
-
+package cat.itacademy.barcelonactiva.cajas.emmanuel.s04.t02.n02.S04T02N02CajasEmmanuel.controller;
 import cat.itacademy.barcelonactiva.cajas.emmanuel.s04.t02.n02.S04T02N02CajasEmmanuel.model.domain.Fruit;
-import cat.itacademy.barcelonactiva.cajas.emmanuel.s04.t02.n02.S04T02N02CajasEmmanuel.model.repository.IFrutaJpaRepository;
+import cat.itacademy.barcelonactiva.cajas.emmanuel.s04.t02.n02.S04T02N02CajasEmmanuel.model.services.FruitImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("fruit")
 public class FruitController {
+
     @Autowired
-    private IFrutaJpaRepository fruitRepository;
+    private FruitImpl fruitImpl;
 
-    @GetMapping(value= "/getAllFruits")
-    public List<Fruit> getTasks(){
-        return fruitRepository.findAll();
+    @GetMapping
+    @RequestMapping(value = "getAllFruits",method = RequestMethod.GET)
+    public ResponseEntity<?> getAllFruits(){
+        List<Fruit> fruitList=this.fruitImpl.getAllfruits();
+        return ResponseEntity.ok(fruitList);
     }
-
-    @PostMapping(value="/addFruit")
-    public String saveTask(@RequestBody Fruit fruit){
-        fruitRepository.save(fruit);
-        return "Saved task";
+    @PutMapping
+    @RequestMapping(value = "addFruit",method = RequestMethod.POST)
+    public ResponseEntity<?> addFruit(@RequestBody Fruit fruit){
+        Fruit addFruit=this.fruitImpl.addFruit(fruit);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addFruit);
     }
-
-    @PutMapping(value="/update/{id}")
-    public String updateTask(@PathVariable Integer id, @RequestBody Fruit fruit){
-        Fruit updateFruit = fruitRepository.findById(id).get();
-        updateFruit.setName(fruit.getName());
-        updateFruit.setKilosQuantity(fruit.getKilosQuantity());
-        fruitRepository.save(updateFruit);
-        return "Updated Fruits";
+    @PutMapping
+    @RequestMapping(value = "updateFruit",method = RequestMethod.PUT)
+    public ResponseEntity<?> updateFruit(@RequestBody Fruit fruit){
+        Fruit update=this.fruitImpl.updateFruit(fruit);
+        return ResponseEntity.status(HttpStatus.CREATED).body(update);
     }
-
-    @DeleteMapping(value="delete/{id}")
-    public String deleteTask(@PathVariable Integer id){
-        Fruit deletedTask = fruitRepository.findById(id).get();
-        fruitRepository.delete(deletedTask);
-        return "Deleted Task";
+    @GetMapping
+    @RequestMapping(value = "getFruitById/{id}",method = RequestMethod.GET)
+    public ResponseEntity<?> getFruitById(@PathVariable int id){
+        Fruit persona=this.fruitImpl.getFruitById(id);
+        return ResponseEntity.ok(persona);
     }
-
+    @DeleteMapping
+    @RequestMapping(value = "deleteFruitById/{id}",method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteFruit(@PathVariable int id){
+        this.fruitImpl.deleteFruit(id);
+        return ResponseEntity.ok().build();
+    }
 }
